@@ -1,2 +1,9 @@
 site_name: minorhacks devblog
 docs_dir: src
+markdown_extensions:
+- admonition
+nav:
+- Home: index.md
+- Posts:
+  - November 2024:
+    - First Post: posts/first_post.md

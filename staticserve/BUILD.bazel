@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+
+go_library(
+    name = "staticserve_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/minorhacks/devblog/staticserve",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_github_go_chi_chi_v5//:chi",
+        "@com_github_victoriametrics_metrics//:metrics",
+    ],
+)
+
+go_binary(
+    name = "staticserve",
+    embed = [":staticserve_lib"],
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "layer",
+    srcs = [":staticserve"],
+    package_dir = "/minorhacks/bin",
+    visibility = ["//visibility:public"],
+)

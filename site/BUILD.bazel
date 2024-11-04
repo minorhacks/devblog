@@ -1,7 +1,38 @@
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push")
 load("//bzl:mkdocs.bzl", "mkdocs_site")
 
 mkdocs_site(
     name = "site",
     srcs = glob(["src/**/*.md"]),
     config = "mkdocs.yml",
+)
+
+pkg_tar(
+    name = "layer",
+    srcs = [":site"],
+    package_dir = "minorhacks",
+)
+
+oci_image(
+    name = "image",
+    base = "@distroless_cc",
+    entrypoint = [
+        "/minorhacks/bin/staticserve",
+        "--serve_dir",
+        "/minorhacks/site_gen",
+    ],
+    labels = {
+        "org.opencontainers.image.source": "https://github.com/minorhacks/devblog",
+    },
+    tars = [
+        "//staticserve:layer",
+        ":layer",
+    ],
+)
+
+oci_push(
+    name = "image_push",
+    image = ":image",
+    repository = "ghcr.io/minorhacks/devblog",
 )

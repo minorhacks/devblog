@@ -1,0 +1,7 @@
+load("//bzl:mkdocs.bzl", "mkdocs_site")
+
+mkdocs_site(
+    name = "site",
+    srcs = glob(["src/**/*.md"]),
+    config = "mkdocs.yml",
+)

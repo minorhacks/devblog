@@ -1,0 +1,20 @@
+[package]
+name = "rpi_ledctrl"
+version = "0.1.0"
+edition = "2021"
+description = "Fun with RGB LED strips and the RPi Pico 2350"
+
+[dependencies]
+embedded-hal = "1.0.0"
+panic-halt = "1.0.0"
+rp235x-hal = { version = "0.2.0", features = ["critical-section-impl"] }
+rp235x-pac = "0.1.0"
+rp235x-hal-macros = "0.1.0"
+
+[target.'thumbv8m.main-none-eabihf'.dependencies]
+cortex-m = "0.7.2"
+cortex-m-rt = "0.7.5"
+
+[features]
+default = ["rt"]
+rt = ["rp235x-pac/rt"]
